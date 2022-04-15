@@ -13,3 +13,6 @@
 2. **컴파일러** 또는 **인터프리터**가 `프로그램을 컴퓨터가 이해할 수 있는 기계어로 변환`한다
 3. 컴퓨터는 이 기계어를 이용해서 명령을 수행한다
 
+<p align=center>
+  <img width="423" alt="image" src="https://user-images.githubusercontent.com/43084680/163587097-954b1faa-dc28-4f75-9fa4-0dbffb0f473b.png">
+</p>
