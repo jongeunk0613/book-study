@@ -16,3 +16,18 @@
 <p align=center>
   <img width="423" alt="image" src="https://user-images.githubusercontent.com/43084680/163587097-954b1faa-dc28-4f75-9fa4-0dbffb0f473b.png">
 </p>
+<br/>
+
+# 구문과 의미
+
+프로그래밍 언어는 **구문(syntax)과** **의미(semantics)의** 조합으로 표현된다.  
+외국어를 배울 때와 마찬가지로, 문법을 잘 안다고 해서 꼭 말을 잘한다고 말할 수 없듯이, 프로그래밍 언어에서도 `문법과 의미가 둘다 중요`하다.   
+문제 해결 능력을 통해 만들어낸 `해결 방안을 프로그래밍 언의 문법을 사용해서 실행하는 것`이 **프로그래밍 언어의 목적**이다.   
+따라서 문법적으로 맞을 뿐만 아니라 요구사항이 실현되어야 의미가 있다.  
+
+<p align=center>
+<img width="599" alt="image" src="https://user-images.githubusercontent.com/43084680/163589006-4478ca0c-4f1c-49fd-b2e5-f18340021934.png">
+</p>
+
+
+
