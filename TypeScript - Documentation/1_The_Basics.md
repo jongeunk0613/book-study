@@ -1,6 +1,6 @@
 # The Basics
 The only way in pure JavaScript to tell what some function does with a particular value is to `call it and see what happens` &rarr; **dynamic typing**.  
-Using **static type system**, we can `make predictions` about what code is expected `before it runs`. 
+Using **static type system**, we can `make predictions` about what code is expected `before it runs`.  
 <br/>
 
 ## Static type-checking
