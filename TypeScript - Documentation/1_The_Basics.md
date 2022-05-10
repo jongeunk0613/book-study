@@ -93,7 +93,58 @@ Expected 2 arguments, but got 1.
 <br/>
 
 ## Emitting with Errors
+Even when `tsc` reports an error about the code, a js file will be outputed.  
+This is due to one of TypeScript's core values : much of the time, _you_ will know bettern than TypeScript.  
+By using the `noEmitOnError` compiler option, you can make TypeScript more strict and defensive against mistakes.  
+This way, if an error occurs, there is no file outputed.  
+```console
+tsc --noEmitOnError hello.ts
+```
+<br/>
 
+## Explicit Types
+Type annotations can be added to describe what types of values a variable or functions can be used with.  
+```TypeScript
+function greet(person: string, date: Date) {
+  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
+}
+```
+It is not mandatory to write explicit type annotations. In many cases, TypeScript can even just _infer_ the types if they are ommitted.
+![image](https://user-images.githubusercontent.com/43084680/167634976-8c3dd6b1-451c-4c59-b08c-d80634243388.png)
+<br/>
+
+## Erased Types
+Type annotations aren't part of JavaScript, therefore TypeScript cannot be run right away.  
+Therefore, when TypeScript is compiled to JavaScript, any TypeScript-specific code, including type annotation, is stripped out.  
+
+Check out the `greet` function after it is compiled:
+```JavaScript
+"use strict";
+function greet(person, date) {
+  console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
+}
+greet("Maddison", new Date());
+```
+<br/>
+
+## Downleveling
+TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones. This process is called _downleveling_.  
+By default, TypeScript targets ES3. The target version can be changed : `tsc --target es2015 hello.ts`.  
+  
+Template strings are a feature from ES6. Therefore, we can see that from the previous code, the template strings are converted to plain string concatenation.  
+<br/>
+
+## Strictness
+By default, types are optional, inference takes the most lenient types, and there's no checking for potentially `null`/`undefined` values.  
+However, several type-checking strictness flags can be set. The two biggest are `noImplicitAny` and `strictNullChecks`.  
+<br/>
+
+## `noImplicitAny`
+Issues an error on any variable whose type is implicitly inferred as `any`.
+<br/>
+
+## `strictNullChecks`
+Makes handling `null` and `undefined` more explicit, and spares us from worrying about whether we forgot to handle `null` and `undefined`.
 
 
 
