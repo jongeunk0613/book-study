@@ -140,13 +140,12 @@ However, several type-checking strictness flags can be set. The two biggest are 
 <br/>
 
 ## `noImplicitAny`
-Issues an error on any variable whose type is implicitly inferred as `any`.
+Issues an error on any variable whose type is implicitly inferred as `any`.  
 <br/>
 
 ## `strictNullChecks`
-Makes handling `null` and `undefined` more explicit, and spares us from worrying about whether we forgot to handle `null` and `undefined`.
-
-
+Makes handling `null` and `undefined` more explicit, and spares us from worrying about whether we forgot to handle `null` and `undefined`.  
+<br/>
 
 ### References
 - [typescriptlang - basic types](https://www.typescriptlang.org/docs/handbook/2/basic-types.html)
