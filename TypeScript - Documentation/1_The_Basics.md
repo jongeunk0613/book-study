@@ -141,4 +141,5 @@ type Array = {
 
 ### References
 - [typescriptlang - basic types](https://www.typescriptlang.org/docs/handbook/2/basic-types.html)
+- [typescriptlang - noImplicitAny](https://www.typescriptlang.org/tsconfig#noImplicitAny)
 - [typescriptlang - strictNullChecks](https://www.typescriptlang.org/tsconfig#strictNullChecks)
