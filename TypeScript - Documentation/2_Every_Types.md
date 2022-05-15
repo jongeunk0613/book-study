@@ -37,4 +37,21 @@ It is useful when you don't want to write out a long type just to convince TypeS
 <img width="513" alt="image" src="https://user-images.githubusercontent.com/43084680/168473814-9e5aa4b9-13d2-48e6-95e0-3125e76a99da.png">
 <br/>
   
+## Type Annotations on Variables
+### Explicit Annotation
+Optionally add a type annotation to explicitly specify the type of a variable:
+```TypeScript
+  let myName: string = "Alice";
+```
+> TypeScript doesn't use "types on the left"-style declarations like `int x = 0;`  
+> Type annotations will always go *after* the thing being typed.
+<br/>
+  
+### Implicit Annotation
+In most cases, type annotation is not needed; TypeScript tries to automatically *infer* the types.  
+<img width="493" alt="image" src="https://user-images.githubusercontent.com/43084680/168476473-0ccef585-f37b-4a18-a662-856c1d58a4db.png">
+<br/>
+  
+  
+
 
