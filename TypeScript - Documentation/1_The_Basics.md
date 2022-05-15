@@ -5,13 +5,7 @@ Using **static type system**, we can `make predictions` about what code is expec
 
 ## Static type-checking
 **Static type systems** help us `find bugs before running the code` by `describing the shapes and behaviors of` what our `values` will be when the code is run.  
-```TypeScript
-const message = "hello!";
-
-message();
-/* This expression is not callable.
-  Type 'String' has no call signatures. */
-```
+<img width="415" alt="image" src="https://user-images.githubusercontent.com/43084680/168466095-5a91f581-4fec-4171-9af5-3aeddf48f4b1.png">
 <br/>
 
 ## Non-exception Failures
@@ -19,37 +13,13 @@ TypeScript catches potential bugs, even those that are "valid" Javascript that d
 Bugs such as typos, uncalled functions, or basic logic errors.  
 
 ### accessing a property that doesn't exist
-```JavaScript
-const user = {
-  name: "Daniel",
-  age: 26,
-};
-
-user.location;
-// JavaScript -> returns undefined
-// TypeScript -> Property 'location' does not exist on type '{ name: string; age: number; }'.
-
-```
+<img width="692" alt="image" src="https://user-images.githubusercontent.com/43084680/168466181-582f17ff-464d-4d5c-952c-04ac6e38f62c.png">
 
 ### uncalled functions
-``` JavaScript
-function flipCoin() {
-  // Meant to be Math.random()
-  return Math.random < 0.5;
-  // Operator '<' cannot be applied to types '() => number' and 'number'.
-}
-```
+<img width="672" alt="image" src="https://user-images.githubusercontent.com/43084680/168466249-c9d82896-3686-4b10-b3e5-d0279706d356.png">
 
 ### basic logic errors
-```JavaScript
-const value = Math.random() < 0.5 ? "a" : "b";
-if (value !== "a") {
-  // ...
-} else if (value === "b") {
-  // This condition will always return 'false' since the types '"a"' and '"b"' have no overlap.
-  // Oops, unreachable
-}
-```
+<img width="832" alt="image" src="https://user-images.githubusercontent.com/43084680/168466298-b5cd31fe-268c-4323-a313-c5096e0e6d18.png">
 <br/>
 
 ## Types for Tooling
@@ -141,11 +111,34 @@ However, several type-checking strictness flags can be set. The two biggest are 
 
 ## `noImplicitAny`
 Issues an error on any variable whose type is implicitly inferred as `any`.  
+<img width="506" alt="image" src="https://user-images.githubusercontent.com/43084680/168467230-8ccaa78d-6b32-4dd2-8018-7c34c412d272.png">
+
 <br/>
 
 ## `strictNullChecks`
 Makes handling `null` and `undefined` more explicit, and spares us from worrying about whether we forgot to handle `null` and `undefined`.  
 <br/>
+<img width="505" alt="image" src="https://user-images.githubusercontent.com/43084680/168466866-526a122f-6d32-4bfb-a7f2-81d969f24a11.png">
+Here, the user filtered by find may be null or undefined. However, this is not considered in the code.  
+
+By setting `strictNullChecks` to `true`, `null` and `undefined` have their own distinct types and you'll get a type error if you try to use them where a concrete value is expected.  
+This is the code after setting the `StrickNullChecks` to `true`.  
+<img width="512" alt="image" src="https://user-images.githubusercontent.com/43084680/168466956-af7a1ef9-b748-4f11-adb3-e4ec7acdd655.png">
+
+Check the definition of `find` function. The following is a simplification of it.
+```TypeScript
+// When strictNullChecks: true
+type Array = {
+  find(predicate: (value: any, index: number) => boolean): S | undefined;
+};
+
+// When strictNullChecks: false the undefined is removed from the type system
+// allowing you to write code which assumes it always found a result
+type Array = {
+  find(predicate: (value: any, index: number) => boolean): S;
+};
+```
 
 ### References
 - [typescriptlang - basic types](https://www.typescriptlang.org/docs/handbook/2/basic-types.html)
+- [typescriptlang - strictNullChecks](https://www.typescriptlang.org/tsconfig#strictNullChecks)
