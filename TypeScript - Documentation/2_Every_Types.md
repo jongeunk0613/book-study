@@ -54,7 +54,8 @@ In most cases, type annotation is not needed; TypeScript tries to automatically 
   
 ## Functions
 TypeScript allows you to specify the `types of both the input and output values` of functions.  
-
+<br/>
+  
 ### Parameter Type Annotations
 Add type annotations `after each parameter` to declare what types of parameters the function accepts.  
 With type annotations, arguments to that funtion will be checked.  
@@ -70,7 +71,7 @@ Add return type annotations `after the parameter list`.
 TypeScript `infers the function's return type` based on its `return` statements.  
 Therefore, usually a return type annotation is not needed.  
 Sometimes it is added for documentation purposes, to prevent accidental changes, or just for personal preference. 
-<br/>
+<br/><br/>
   
 ### Anonymous Functions
 With anonymous functions, `contextual typing` occurs, which the `context` that the function occurred within informs what type it should have.  
