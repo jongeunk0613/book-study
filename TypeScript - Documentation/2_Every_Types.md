@@ -52,6 +52,31 @@ In most cases, type annotation is not needed; TypeScript tries to automatically 
 <img width="493" alt="image" src="https://user-images.githubusercontent.com/43084680/168476473-0ccef585-f37b-4a18-a662-856c1d58a4db.png">
 <br/>
   
-  
+## Functions
+TypeScript allows you to specify the `types of both the input and output values` of functions.  
 
+### Parameter Type Annotations
+Add type annotations `after each parameter` to declare what types of parameters the function accepts.  
+With type annotations, arguments to that funtion will be checked.  
+<img width="675" alt="image" src="https://user-images.githubusercontent.com/43084680/168610770-5e79fd9a-12bc-42be-8793-70805ab3017c.png">
+
+> Even if you don't have type annotations on your parameters, TypeScript will `check` that you passed the `right number of arguments.`
+<br/>
+  
+### Return Type Annotations
+Add return type annotations `after the parameter list`.  
+<img width="296" alt="image" src="https://user-images.githubusercontent.com/43084680/168611246-f3bc677f-d516-4ad9-b4d9-a80c81ed0cf1.png">
+
+TypeScript `infers the function's return type` based on its `return` statements.  
+Therefore, usually a return type annotation is not needed.  
+Sometimes it is added for documentation purposes, to prevent accidental changes, or just for personal preference. 
+<br/>
+  
+### Anonymous Functions
+With anonymous functions, `contextual typing` occurs, which the `context` that the function occurred within informs what type it should have.  
+<img width="832" alt="image" src="https://user-images.githubusercontent.com/43084680/168612933-ed1f929b-df1a-489d-8b6c-36803c8279d6.png">
+
+Here, even though the parameter `s` didn't have a type annotation, TypeScript used the types of the `forEach` function, along with the inferred type of the array, to determine the type `s` will have.  
+<br/>
+  
 
