@@ -80,4 +80,53 @@ With anonymous functions, `contextual typing` occurs, which the `context` that t
 Here, even though the parameter `s` didn't have a type annotation, TypeScript used the types of the `forEach` function, along with the inferred type of the array, to determine the type `s` will have.  
 <br/>
   
+## Object Types
+Object refers to any JavaScript value with properties.  
+To define an object type, wimply `list its properties and their types`.  
+<img width="417" alt="image" src="https://user-images.githubusercontent.com/43084680/168807426-2595ba67-fa45-49f0-a94a-e993f247a14c.png">
+<br/>
+Use `,` or `;` to separte the properties.  If a property type is not specified, it will be assumed to be `any`.
+<br/>
+<br/>
+  
+### Optional Properties
+Specify a property as *optional* by adding a `?` after the property name.  
+<img width="442" alt="image" src="https://user-images.githubusercontent.com/43084680/168807926-4b61ae63-665d-4be8-857b-96c91d514fdd.png">
+<br/>
+
+In JavaScript, accessing a property that doesn't exists results in `undefined` rather than a runtime error.  
+Therefore, when reading an optional property, you'll have to check of `undefined` before using it.  
+<img width="450" alt="image" src="https://user-images.githubusercontent.com/43084680/168808433-bac16c81-4c5f-464d-8854-af2d32c2223e.png">
+<br/>
+<br/> 
+  
+## Union Types
+With TypeScript, you can build new types by combining the existing ones.  
+  
+### Defining a Union Type
+A `union type` is formed from two or more other types, representing values that `may be any one` of those types.  
+<img width="773" alt="image" src="https://user-images.githubusercontent.com/43084680/168809236-c8625144-0565-47ea-b1ff-1145f19dda18.png">
+<br/>
+<br/>
+  
+### Working with Union Types
+TypeScript will only allow an operation if it is `valid for every member` of the union.  
+Ex: if you have the union `string | number`, you can't use methods that are only available on `string`.  
+<img width="644" alt="image" src="https://user-images.githubusercontent.com/43084680/168809600-654fdd9b-c33c-4934-ad9b-1d9bd8dc5257.png">
+<br/>
+  
+This is resolved by *narrowing* the union with code; this way, TypeScript can deduce a more specific type for a value based on the structure of the code.  
+Ex: TypeScript know that only a `string` value will have a `typeof` value `"string"`.  
+<img width="370" alt="image" src="https://user-images.githubusercontent.com/43084680/168810105-0f4e78d5-50b8-4cac-9baa-9fe73dd87a61.png">
+<br/>
+  
+<img width="370" alt="image" src="https://user-images.githubusercontent.com/43084680/168810778-1c1f0001-694c-4263-801f-a54c46f6e37c.png">
+<br/>
+  
+If all the member of a union have something in common, then the property can be used without narrowing.  
+Ex: both arrays and strings have a `slice` method. Therefore, no narrowing is needed.  
+<img width="354" alt="image" src="https://user-images.githubusercontent.com/43084680/168811081-842feea8-6e38-48db-8412-76227ca32568.png">
+<br/>
+  
+
 
