@@ -22,6 +22,7 @@ They have the same names when using the `typeof` operator on a value of those ty
 In general, `string` denotes a primitive whereas `String` denotes an object.  
 `Primitives` are values that `hold no properties`, whereas `objects` have the feature of `adding a property` to it.  
 <br/>
+// 실제 코드로 String이랑 string 사용할 경우 동작이 어떻게 달라지는지 
 
 ## Arrays
 Specify the type of an array using the syntax **type[]** &rarr; `number[]`, `string[]`   
