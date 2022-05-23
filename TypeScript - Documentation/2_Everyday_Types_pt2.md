@@ -232,3 +232,41 @@ With interface, the property error of `name` is shown as `Mammal.name`; with typ
 <br/><br/>
   
 ## Type Assertions
+Use type assertions to specify and certify that a value is of a certain specific type.  
+```JS
+// Both are the same
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+// Don't use it inside .tsx files
+const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
+```
+<br/>
+Because type assertioes are removed at compile-time, there is no runtime checking associated with a type assertion.  
+There won't be an exception or null generated if the type assertion is wrong.  
+```JS
+function toUpper(n) {
+    return (n as string).toUpperCase();
+}
+
+console.log(toUpper(123));
+```
+<br/>
+TypeScript only allows type assertions which convert to a *more specific or less specific* version of a type.  
+**Impossible** coercions are prevented.  
+```JS
+const x = "hello" as number;
+//Conversion of type 'string' to type 'number' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+```
+<br/>
+This prevents complex coercions that might be valid.  
+In that case, use two assertions as follow:  
+```JS
+const a = (expr as any) as T;
+```
+<br/>
+
+## Literal Types
+
+
+
+
+
