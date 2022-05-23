@@ -265,7 +265,93 @@ const a = (expr as any) as T;
 <br/>
 
 ## Literal Types
+In addition to the general types `string` and `number`, we can refer to *specific* strings and numbers in type positions.  
+Usually, literal types are used on `const` variable declaration; `const` variables' values doesn't change.  
+```JS
+let changingString = "Hello World";
+changingString = "Olá Mundo";
+// Because `changingString` can represent any possible string, that
+// is how TypeScript describes it in the type system
+changingString;
+// ^? let changingString: string
 
+const constantString = "Hello World";
+// Because `constantString` can only represent 1 possible string, it
+// has a literal type representation
+constantString;
+// ^? const constantString: "Hello World"
+```
+<br/>
+
+By combining literals into unions, a function that only accepts certain set of known values can be created.  
+```JS
+// @errors: 2345
+function printText(s: string, alignment: "left" | "right" | "center") {
+  // ...
+}
+printText("Hello, world", "left");
+printText("G'day, mate", "centre");
+```
+```JS
+function compare(a: string, b: string): -1 | 0 | 1 {
+  return a === b ? 0 : a > b ? 1 : -1;
+}
+```
+```JS
+// @errors: 2345
+interface Options {
+  width: number;
+}
+function configure(x: Options | "auto") {
+  // ...
+}
+configure({ width: 100 });
+configure("auto");
+configure("automatic");
+```
+<br/>
+`Boolean` literals are also a kind of literal type.  
+It is an alias for the union `true | false`.  
+
+## Literal Inference
+TypeScript assumes that the properties of an object might change values later.  
+Therefore, instead of infering the type as a single literal type, if inferes its general type based on the literal.  
+```JS
+const obj = { counter: 0 };
+if (someCondition) {
+  obj.counter = 1;
+}
+// object properties can be read and written, therefore, instead of 0, it has the type of number.
+```
+
+```
+const req = { url: "https://example.com", method: "GET" };
+handleRequest(req.url, req.method);
+Argument of type 'string' is not assignable to parameter of type '"GET" | "POST"'.
+// req.method has the type of string instead of GET because other methods such as POST, GUESS can happen
+```
+
+In the latter, case:
+1. change the inference by adding a type assertion in either location
+```JS
+// Change 1:
+const req = { url: "https://example.com", method: "GET" as "GET" };
+// Change 2
+handleRequest(req.url, req.method as "GET");
+```
+2. use `as const` to convert the entire object to be type literals
+```JS
+const req = { url: "https://example.com", method: "GET" } as const;
+handleRequest(req.url, req.method);
+```
+<br/>
+
+## `null` and `undefined`
+`null` refers to `absent`, and `undefined` refers to `uninitialized`.  
+They behave differently depending on the `strictNullChecks` option.  
+<br/>
+
+### `strictNullChecks` off
 
 
 
