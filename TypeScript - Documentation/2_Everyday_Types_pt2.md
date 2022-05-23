@@ -352,6 +352,38 @@ They behave differently depending on the `strictNullChecks` option.
 <br/>
 
 ### `strictNullChecks` off
+Values that might be `null` or `undefined` can still be accessed normally and be assigned to a property of any type.  
+No null checks will be done.  
+<br/>
+
+### `strictNullChecks` on
+When a value is `null` or `undefined`, testing for those values before using methods or properties on that value will be neccessary.  
+Just like checking for `undefined` before using an optional property, *narrowing* can be used to check for values that might be `null`.  
+```JS
+function doSomething(x: string | null) {
+  if (x === null) {
+    // do nothing
+  } else {
+    console.log("Hello, " + x.toUpperCase());
+  }
+}
+```
+<br/>
+
+### Non-null Assertion Operator (Postfix `!`)
+Removes `null` and `undefined` from a type without doing any explicit checking &rarr; type assertion that the value isn't `null` or `undefined`.  
+```JS
+function liveDangerously(x?: number | null) {
+  // No error
+  console.log(x!.toFixed());
+}
+```
+Just like other type assertions, this doesn't change the runtime behavior of your code, so it's important to only use `!` when you know that the value *can't* be `null` or `undefined`.  
+<br/>
+
+## Enums
+
+
 
 
 
