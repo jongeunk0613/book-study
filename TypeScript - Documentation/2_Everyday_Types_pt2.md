@@ -149,6 +149,21 @@ Just like other type assertions, this `doesn't change the runtime behavior` of y
 <br/>
 
 ## Enums
+Enums are a feature added to JavaScript by TypeScript which allows for describing a value which could be `one of a set of possible named constants`.  
+Unlike most TypeScript features, this is `not a type-level addition` to JavaScript but something `added to the language and runtime`.  
+<img width="386" alt="image" src="https://user-images.githubusercontent.com/43084680/170055944-acf81cef-dd03-4909-bd5e-b73fe9ac69f4.png">
+<br/>
+
+## Less Common Primitives
+## bigint
+`BigInt` is used for very large integers.  
+Included after ES2020.  
+<img width="336" alt="image" src="https://user-images.githubusercontent.com/43084680/170056424-95a93018-b617-49f7-9799-5a6dbdf498c4.png">
+<br/>
+
+## symbol
+`Symbol` is used to create a globally unique reference via the function `Symbol()`
+<img width="864" alt="image" src="https://user-images.githubusercontent.com/43084680/170056738-c09a8123-631e-4e14-9b67-e29debcd6a50.png">
 
 
 
