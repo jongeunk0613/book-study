@@ -142,8 +142,11 @@ Just like other type assertions, this `doesn't change the runtime behavior` of y
 <br/>
 
 > `?` vs `!`
-> `?` checks whether the value is defined and it not, returns `undefined`.
+> 
+> `?` checks whether the value is defined and if not, returns `undefined`.  
 > `!` assumes that the value is surely not `null` nor `undefined`.
+<br/>
+
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/43084680/170054332-708eeb73-c292-4026-88b6-a517f4b3b289.png"><br/>
 <img width="335" alt="image" src="https://user-images.githubusercontent.com/43084680/170054535-c5747b59-9baa-4021-acf6-8c463baa7169.png">
 <br/>
