@@ -19,8 +19,8 @@ In this case, TypeScript is only concerned with the *structure* of the value pas
 
 <table>
 	<tr>
-		<th> Adding new fields to an existing interface<br/>Declaration merging possible </th>
-		<th> Type cannot be changed after being created<br/>No declaraction merging </th>
+		<th> Declaration merging possible<br/>Adding new fields to an existing interface </th>
+		<th> No declaraction merging<br/>Type cannot be changed after being created </th>
 	</tr>
 	<tr>
 		<td><img src="https://user-images.githubusercontent.com/43084680/170036275-fe7bcc27-fbee-4cdf-8be4-54eda4a52dd0.png"></td>
