@@ -10,7 +10,7 @@ Since they are only aliases, a type aliases cannot have different "versions" of 
 ## Interfaces
 Another way to name an object type is an `interface declaration`.  
 
-<img width="413" alt="image" src="https://user-images.githubusercontent.com/43084680/170033416-4e7e8432-0aea-4710-9393-6353f97bc81d.png">
+<img width="413" alt="image" src="https://user-images.githubusercontent.com/43084680/170033416-4e7e8432-0aea-4710-9393-6353f97bc81d.png" />
 The example above works just as if an anonymous object type was used.<br/>
 In this case, TypeScript is only concerned with the *structure* of the value passed to `printCoord` - it only cares that it has the expected properties &rarr; `structually typed type system`.  
 <br/>
