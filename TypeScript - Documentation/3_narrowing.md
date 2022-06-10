@@ -28,3 +28,34 @@ You can explicitly coerce values to `Boolean` using the `Boolean` function or th
 By checking if a value is truthy, we can guard against values like `null` and `undefined`.  
 <img width="392" alt="image" src="https://user-images.githubusercontent.com/43084680/173077434-fc6a779b-3291-42d7-8751-1629989e9815.png"><br/>
 This prevents errors like : `TypeError: null is not iterable`.  
+
+<br/>
+However, truthiness checking on primitives can often be error prone.  
+<img width="388" alt="image" src="https://user-images.githubusercontent.com/43084680/173079932-0e6780db-7864-41e5-93d8-37dc9213296a.png"><br/>
+In this case, the empty string case is not handled correctly.  
+When we choose to do **nothing** with a value, there's nothing TypeScript can do for us.  
+`Linter` can help handle this kind of situations.  
+<br/>
+
+Boolean negations with `!` filter out from negated branches.  
+<img width="342" alt="image" src="https://user-images.githubusercontent.com/43084680/173082872-39559b1c-8fcc-43c5-9885-a21c14f96e58.png"><br/>
+<br/>
+
+## Equality narrowing
+`switch` statements and equality checks like `===`, `!==`, `==`, and `!=` can be used to narrow types.  
+<img width="546" alt="image" src="https://user-images.githubusercontent.com/43084680/173083902-2d0e6041-0bb4-4e28-836e-0a039f1ac9c6.png"><br/>
+Since `string` is the only common type that both `x` and `y` can have, TypeScript knows that `x` and `y` must be `string` in the first branch.  
+
+Specific literal values can also be checked.  
+<img width="472" alt="image" src="https://user-images.githubusercontent.com/43084680/173084590-3d6a08e9-e74e-4b2a-87c5-d63ff5dc6cdd.png"><br/>
+
+Looser equality checks with `==` and `!=` also narrows correctly.  
+`== null` checks both whether it's `null` or `undefined`.  
+The same applies to `== undefined`.  
+![image](https://user-images.githubusercontent.com/43084680/173084982-fec42200-f13f-4e65-a8f1-82d304b50204.png)<br/>
+
+
+
+
+
+
