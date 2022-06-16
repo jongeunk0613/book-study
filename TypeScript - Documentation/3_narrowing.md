@@ -61,8 +61,7 @@ The `in` operator determines if an object has a property with the given name.
   &rarr; "true" branch narrows `x`'s types which have either an **optional** or **required** property `value`.  
   &rarr; "false" branch narrows `x`'s types which have either an **optional** or **missing** property `value`.  
 
-<img width="320" alt="image" src="https://user-images.githubusercontent.com/43084680/174058936-f778b4bf-14a1-45d6-9d0b-8c12adf47bbd.png">
-<img width="303" alt="image" src="https://user-images.githubusercontent.com/43084680/174065152-b70fa3c4-6dc4-4f15-9856-c85640dcac15.png"><br/>
+<img width="320" alt="image" src="https://user-images.githubusercontent.com/43084680/174058936-f778b4bf-14a1-45d6-9d0b-8c12adf47bbd.png"><img width="303" alt="image" src="https://user-images.githubusercontent.com/43084680/174065152-b70fa3c4-6dc4-4f15-9856-c85640dcac15.png"><br/>
 
 Optional properties exist in both sides for narrowing.  
 <img width="408" alt="image" src="https://user-images.githubusercontent.com/43084680/174059261-28fe4511-6492-4883-ace2-175ee828517f.png">
