@@ -53,8 +53,36 @@ Looser equality checks with `==` and `!=` also narrows correctly.
 `== null` checks both whether it's `null` or `undefined`.  
 The same applies to `== undefined`.  
 ![image](https://user-images.githubusercontent.com/43084680/173084982-fec42200-f13f-4e65-a8f1-82d304b50204.png)<br/>
+<br/>
+
+# The `in` operator narrowing
+The `in` operator determines if an object has a property with the given name.  
+`"value" in x`:  
+  &rarr; "true" branch narrows `x`'s types which have either an **optional** or **required** property `value`.  
+  &rarr; "false" branch narrows `x`'s types which have either an **optional** or **missing** property `value`.  
+
+<img width="320" alt="image" src="https://user-images.githubusercontent.com/43084680/174058936-f778b4bf-14a1-45d6-9d0b-8c12adf47bbd.png"><br/>
+
+Optional properties exist in both sides for narrowing.  
+<img width="408" alt="image" src="https://user-images.githubusercontent.com/43084680/174059261-28fe4511-6492-4883-ace2-175ee828517f.png">
+<img width="415" alt="image" src="https://user-images.githubusercontent.com/43084680/174059440-08e422bd-14e8-43cd-afe0-ae4118f07887.png"><br/>
+<br/>
+
+## `instanceof` narrowing
+`x instanceof Foo` checks whether the *prototype* chain of `x` contains `Foo.protoype`.  
+<img width="317" alt="image" src="https://user-images.githubusercontent.com/43084680/174059907-343a60fc-ff1c-48c1-b6f5-27ab1fef7f9a.png">
+<img width="335" alt="image" src="https://user-images.githubusercontent.com/43084680/174059928-a88544af-5c6d-4469-9715-3d624da9abb6.png"><br/>
 
 
+## Assignments
+When assigning a variable, TypeScript looks at the right side of the assignment and narrows the left side appropiately. 
+<img width="470" alt="image" src="https://user-images.githubusercontent.com/43084680/174060106-45a7c987-6076-45a3-9c1c-c3ed88aa2b85.png">
+<br/>
+
+Assignability is always checked against the **declared type**.  
+This is why the type of `x` can be changed from `number` to `string`; it's type is `string | number`.  
+If a `boolean` type of value is assigned, an error will occur since that wasn't part of the declared type.  
+![image](https://user-images.githubusercontent.com/43084680/174060479-cf48cc08-7878-4dc6-8e6b-e84fdda578e5.png)
 
 
 
