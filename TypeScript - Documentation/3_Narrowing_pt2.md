@@ -28,6 +28,21 @@ It also knows that in the `else` branch, you must have a `Bird`.
 <br/>
 
 ## Discriminated Unions
+Most of the time, more complex structures are dealt instead of simple types.  
+This type can consist of unions of other multiple types.  
+The common property that exists in every type in the union is called `discriminated union`, since it narrows out the members of the union.  
+
+Take the example of the `Shape` interface, where `circle` types keep track of their radiuses and `square` types keep track of their side lengths.  
+<img width="245" alt="image" src="https://user-images.githubusercontent.com/43084680/176204416-d027001d-6ddf-4db9-8878-f9aeabcd2397.png"><br/>
+<br/>
+
+By using literal types `"circle"` and `"square"`, we can avoid misspelling issues.  
+<img width="892" alt="image" src="https://user-images.githubusercontent.com/43084680/176204862-3326fa24-1417-4ad0-994c-cdd98828b99a.png"><br/>
+<br/>
+
+
+
+
 
 ## The `never` type
 TypeScript uses a `never` type to represent a state which shouldn't exist.  
