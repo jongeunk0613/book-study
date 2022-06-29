@@ -41,91 +41,32 @@ By using literal types `"circle"` and `"square"`, we can avoid misspelling issue
 <br/>
 
 Let's create a `getArea` function that calculates the area depending on the shape type.  
-```JS
-function getArea(shape: Shape) {
-  return Math.PI * shape.radius ** 2;
-Object is possibly 'undefined'.
-}
-```
-<br/>
+<img width="487" alt="image" src="https://user-images.githubusercontent.com/43084680/176447239-f700c5ad-d287-412a-82b2-9a77291c41be.png"><br/>
 
 Under `strictNullChecks` this gives us an error because `radius` might not be defined.  
-```JS
-function getArea(shape: Shape) {
-  if (shape.kind === "circle") {
-    return Math.PI * shape.radius ** 2;
-Object is possibly 'undefined'.
-  }
-}
-```
-<br/>
+<img width="488" alt="image" src="https://user-images.githubusercontent.com/43084680/176447628-73c36437-bd98-43ef-a82a-8a6aa13515c6.png"><br/>
 
 Even though we have done type check it still gives us an error.  
 This is a situation where we know more about our values than the type checker does.  
+<img width="319" alt="image" src="https://user-images.githubusercontent.com/43084680/176447739-f9116c10-265d-4657-925d-c0e4f810096d.png"><br/>
 
-```JS
-function getArea(shape: Shape) {
-  if (shape.kind === "circle") {
-    return Math.PI * shape.radius! ** 2;
-  }
-}
-```
-<br/>
 We could use the non-null assertion `!` but this is error-prone.  
 Also, if `strictNullChecks` is off, then we can assess does properties because optional properties are assumed to always be present.  
 
 We can do better by telling the checker more specifically which properties are needed in which types.  
-```JS
-interface Circle {
-  kind: "circle";
-  radius: number;
-}
- 
-interface Square {
-  kind: "square";
-  sideLength: number;
-}
- 
-type Shape = Circle | Square;
-```
+<img width="231" alt="image" src="https://user-images.githubusercontent.com/43084680/176447890-e2dc6e6d-7c5c-4168-915c-92a2f3370e1c.png"><br/>
+
 This way we tell the type checker that `radius` is required for type `circle` and `sideLength` for type `square`.  
-<br/>
+<img width="679" alt="image" src="https://user-images.githubusercontent.com/43084680/176448042-43c53e5b-d1d1-4dba-a74d-fd2c3db7d2d2.png"><br/>
 
-```
-function getArea(shape: Shape) {
-  return Math.PI * shape.radius ** 2;
-Property 'radius' does not exist on type 'Shape'.
-  Property 'radius' does not exist on type 'Square'.
-}
-```
 Instead of simply telling us that `radius` is undefined, it now tells us that shape might be `Square` and `Square` does not have the property `radius`.  
-
-```JS
-function getArea(shape: Shape) {
-  return Math.PI * shape.radius ** 2;
-Property 'radius' does not exist on type 'Shape'.
-  Property 'radius' does not exist on type 'Square'.
-}
-```
+<img width="677" alt="image" src="https://user-images.githubusercontent.com/43084680/176448215-56ef83c3-d1df-4bcb-9e36-5465252d7bb8.png"><br/>
 
 Now the `getArea` function does not have any errors occurring.  
 Here, the `radius` property is called the *discriminant* property.  
 Checking whether the `kind` property is `"circle"` got rid of every type in `Shape` that didn't have a `kind` property with the type `"circle"`.  
 Now, no non-null assertion `!` is needed.  
-```JS
-function getArea(shape: Shape) {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-                        
-(parameter) shape: Circle
-    case "square":
-      return shape.sideLength ** 2;
-              
-(parameter) shape: Square
-  }
-}
-```
+<img width="490" alt="image" src="https://user-images.githubusercontent.com/43084680/176448440-92650e07-2fe1-4283-9cab-69eed4090f1c.png"><br/>
 
 
 ## The `never` type
