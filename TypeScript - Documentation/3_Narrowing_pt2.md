@@ -30,7 +30,7 @@ It also knows that in the `else` branch, you must have a `Bird`.
 ## Discriminated Unions
 Most of the time, more complex structures are dealt instead of simple types.  
 This type can consist of unions of other multiple types.  
-The common property that exists in every type in the union is called `discriminated union`, since it narrows out the members of the union.  
+The common property with literal types that exists in every type in the union is called `discriminated union`, since it narrows out the members of the union.  
 
 Take the example of the `Shape` interface, where `circle` types keep track of their radiuses and `square` types keep track of their side lengths.  
 <img width="245" alt="image" src="https://user-images.githubusercontent.com/43084680/176204416-d027001d-6ddf-4db9-8878-f9aeabcd2397.png"><br/>
@@ -40,8 +40,92 @@ By using literal types `"circle"` and `"square"`, we can avoid misspelling issue
 <img width="892" alt="image" src="https://user-images.githubusercontent.com/43084680/176204862-3326fa24-1417-4ad0-994c-cdd98828b99a.png"><br/>
 <br/>
 
+Let's create a `getArea` function that calculates the area depending on the shape type.  
+```JS
+function getArea(shape: Shape) {
+  return Math.PI * shape.radius ** 2;
+Object is possibly 'undefined'.
+}
+```
+<br/>
 
+Under `strictNullChecks` this gives us an error because `radius` might not be defined.  
+```JS
+function getArea(shape: Shape) {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius ** 2;
+Object is possibly 'undefined'.
+  }
+}
+```
+<br/>
 
+Even though we have done type check it still gives us an error.  
+This is a situation where we know more about our values than the type checker does.  
+
+```JS
+function getArea(shape: Shape) {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius! ** 2;
+  }
+}
+```
+<br/>
+We could use the non-null assertion `!` but this is error-prone.  
+Also, if `strictNullChecks` is off, then we can assess does properties because optional properties are assumed to always be present.  
+
+We can do better by telling the checker more specifically which properties are needed in which types.  
+```JS
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+ 
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
+ 
+type Shape = Circle | Square;
+```
+This way we tell the type checker that `radius` is required for type `circle` and `sideLength` for type `square`.  
+<br/>
+
+```
+function getArea(shape: Shape) {
+  return Math.PI * shape.radius ** 2;
+Property 'radius' does not exist on type 'Shape'.
+  Property 'radius' does not exist on type 'Square'.
+}
+```
+Instead of simply telling us that `radius` is undefined, it now tells us that shape might be `Square` and `Square` does not have the property `radius`.  
+
+```JS
+function getArea(shape: Shape) {
+  return Math.PI * shape.radius ** 2;
+Property 'radius' does not exist on type 'Shape'.
+  Property 'radius' does not exist on type 'Square'.
+}
+```
+
+Now the `getArea` function does not have any errors occurring.  
+Here, the `radius` property is called the *discriminant* property.  
+Checking whether the `kind` property is `"circle"` got rid of every type in `Shape` that didn't have a `kind` property with the type `"circle"`.  
+Now, no non-null assertion `!` is needed.  
+```JS
+function getArea(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+                        
+(parameter) shape: Circle
+    case "square":
+      return shape.sideLength ** 2;
+              
+(parameter) shape: Square
+  }
+}
+```
 
 
 ## The `never` type
