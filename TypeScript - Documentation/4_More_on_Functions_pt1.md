@@ -35,4 +35,12 @@ Call and construct signatures can be combined in the same type arbitrarily.
 
 ### Optional Parameters
 
+Functions in JavaScript can have a varying number of arguments,  
+and this can be modeled by defining a `optional parameter` using `?`.  
+<img width="279" alt="image" src="https://user-images.githubusercontent.com/43084680/178284080-4d0e05ce-195e-4430-9f74-a7d8711fe621.png"><br/>
+<br/>
+
+The variable `l` will have the type `number | undefined` because unspecified parameters in JavaScript have the value `undefined`.  
+
+
 
