@@ -164,6 +164,7 @@ function filter2<Type, Func extends (arg: Type) => boolean> (
 
 `Func` doesn't relate two values.  
 > **RULE**: Always use as few type parameters as possible
+<br/>
 
 ### Type Parameters Should Appear Twice
 ```JS
