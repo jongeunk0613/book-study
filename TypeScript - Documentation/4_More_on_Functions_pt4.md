@@ -36,5 +36,78 @@ console.log(Object.keys(add))   // []
 ```
 
 #### `object` vs `Object` vs `{ }`
+asdasdasd
 
 ### `unknown`
+Represents *any* value.  
+It's similar to `any`, but safer because it's not legal to do anything with an `unknown` value.  
+
+```JS
+function f1(a: any) {
+    a.b(); // OK
+}
+
+function f2(a: unknown) {
+    a.b();
+    // Object is of type 'unknown'
+}
+```
+
+Useful when describing functions that **accept any value** without using `any` in the function body,  
+or functions that **returns a value of unknown type**.  
+```JS
+function safeParse(s: string): unknown {
+    return JSON.parse(s);
+}
+
+console.log(safeParse('{}'));       // { }
+console.log(safeParse('true'));     // true
+console.log(safeParse('"foo"'));    // "foo"
+console.log(safeParse('[1, 5, "false"]'))   // [1, 5, "false"]
+console.log(safeParse('null'));     // null
+```
+
+<br/>
+
+### `never`
+Represents values which are *never* observed.  
+In a return type, it means that the function **throws an exception** or **terminates execution** of the program.  
+```JS
+function fail(msg: string): never {
+    throw new Error(msg);
+}
+```
+Also appears when TypeScript determines **there's nothing left in a union**.  
+```JS
+function fn(x: string | number) {
+    if (typeof x === "string") {
+        // do something
+    } else if (typeof x === "number") {
+        // do something else
+    } else {
+        x; // type 'never'!
+    }
+}
+```
+<br/>
+
+### `Function`
+Describes properties like `bind`, `call`, `apply`, and others present on all function values in JavaScript.  
+The properties of type `Function` can be called and returns `any`.  
+This is an **untyped function call**, and it is best avoided because of the unsafe `any` return type. 
+If needed to accept an arbitrary function but don't intend to call it,  
+the type `() => void` is generally safer.  
+
+```JS
+// function doSomething(f: Function) : any
+function doSomething(f: Function) {
+    return f(1, 2, 3);
+}
+```
+<br/>
+
+### `Rest Parameters and Arguments`
+
+
+
+
