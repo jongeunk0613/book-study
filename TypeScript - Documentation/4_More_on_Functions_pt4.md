@@ -22,7 +22,7 @@ It's very likely that `Object` will not be used.
 > `object` is not `Object`. **Always** use `object`!
 <br/>
 
-In JavaScript function values are objects:
+In JavaScript, function values are objects:
 - they have properties
 - have `Object.prototype` in their prototype chain
 - are `instanceOf Object`
@@ -35,8 +35,45 @@ console.log(add instanceof Object)  // true
 console.log(Object.keys(add))   // []
 ```
 
+<br/>
+<hr/>
+
 #### `object` vs `Object` vs `{ }`
-asdasdasd
+##### `Object`  
+Contains methods such as `toString()` and `hasOwnProperty()` that is present in all JavaScript Objects.  
+Any value (primitive, non-primitive) can be assigned to `Object` type.  
+```JS
+function foo(bar: Object) {
+    console.log(bar);
+}
+
+foo([1, 2, 3]);     // ok
+foo({a: 1, b: 2})   // ok
+foo(123);           // ok
+```
+<br/>
+
+##### `{ }`
+An empty object.  
+It is the same as `Object` in runtime but different in compile time.  
+In compile time `{ }` doesn't have `Object`'s members and `Object` has more strict behavior.  
+<br/>
+
+##### `object`  
+It is any **non-primitive** type.  
+You can't assign to it any primitive type like `bool, number, string, symbol`.  
+```JS
+function foo(bar: object) {
+    console.log(bar);
+}
+
+foo([1, 2, 3]);     // ok
+foo({a: 1, b: 2})   // ok
+foo(123);           // Argument of type 'number' is not assignable to parameter of type 'object'
+```
+
+<hr/>
+<br/>
 
 ### `unknown`
 Represents *any* value.  
