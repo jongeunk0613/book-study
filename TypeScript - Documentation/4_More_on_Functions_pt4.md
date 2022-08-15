@@ -106,8 +106,157 @@ function doSomething(f: Function) {
 ```
 <br/>
 
-### `Rest Parameters and Arguments`
+### Rest Parameters
+It is also possible to describe a function that takes an *unbounded* number of arguments using **rest parameters**.  
+A **rest parameter** appears after all other parameters, and uses the `...` syntax.  
 
+```JS
+function multiply(n: number, ...m: number[]){
+    return m.map((x) => n*x);
+}
+// [10, 20, 30, 40]
+const a = multiply(10, 1, 2, 3, 4);
+```
+In TypeScript, the type annotation on these parameters is implicitly `any[]` instead of `any`,  
+and any type annotation given must be of the form `Array[T]` or `T[]` or a tuple type.  
+```JS
+// Rest parameter 'm' implicitly has an 'any[]' type, but a better type may be inferred from usage.
+function multiply(n: number, ...m){
+    return m.map((x) => n*x);
+}
 
+// A rest parameter must be of an array type
+function multiply2(n: number, ...m: number){
+    return m.map((x) => n*x);
+}
+```
+<br/>
 
+### Rest Arguments
+Conversely, a **variable number of arguments** can be provided from an array using the spread syntax.  
+For example, the `push` method of arrays takes any number of arguments.  
+```JS
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+arr1.push(...arr2);
+console.log(arr1);  // [1, 2, 3, 4, 5, 6]
+```
 
+In general, TypeScript does not assume that arrays are immutable.  
+Which leads to some surprising behavior:  
+```JS
+// Inferred type is number[] -- "an array with zero or more numbers",
+// not specifically two numbers
+const args = [8, 5];
+// Math.atan2(y: number, x: number): number
+const angle = Math.atan2(...args);
+// A spread argument must either have a tuple type or be passed to a rest parameter. 
+```
+In general a `const` context is the most straightforward solution:  
+```JS
+// Inferred as 2-length tuple
+const args = [8, 5] as const;
+const angle = Math.atan2(...args);
+```
+Usign rest arugments may require turning on **downlevelIteration** when targeting older runtimes.  
+<br/>
+
+<hr/>
+
+#### `downlevelIteration`
+In TypeScript, Downleveling means transpiling to an older version of JavaScript.  
+This flag is to enable support for a more accurate implementation of how modern JavaScript iterate through new concepts in older JavaScript runtimes.  
+  
+ECMAScript6 added several new iteration primitives:  
+- `for / of` loop  
+- Array spread `[a, ...b]`  
+- argument spread `fn(...args)`  
+- `Symbol.iterator`  
+
+`downlevelIteration` allows for these iteration primitives to be used more accurately in ES5 environments  
+if a `Symbol.iterator` implementation is present.  
+
+[downlevelIteration](https://www.typescriptlang.org/tsconfig#downlevelIteration)
+<hr/>
+<br/>
+
+### Parameter Destructuring
+Used to conveniently unpack objects provided as an argument into one or local variables in the function body.  
+In JavaScript:  
+```JS
+function sum({a, b, c}) {
+    console.log(a + b + c)
+}
+
+sum({a: 10, b: 3, c: 9});
+```
+The type annotation for the object goes after the destructuring syntax:  
+```JS
+function sum({a, b, c}: {a:number; b: number; c:number}) {
+    console.log(a + b + c)
+}
+
+console.log(sum({a: 10, b: 3, c: 9}));
+```
+Or use a named type:  
+```JS
+type ABC = {a:number; b: number; c:number};
+function sum({a, b, c}: ABC) {
+    console.log(a + b + c)
+}
+
+console.log(sum({a: 10, b: 3, c: 9}));
+```
+<br/>
+
+### Assignability of Functions
+#### Return type `void`
+Contextual typing with a return type of `void` does **not** force functions to **not** return something.  
+Another way to say this is a contextual function type with a `void` return type (`type vf = () => void`),  
+when implemented, can return *any* other value, but it will be ignored.  
+```JS
+type voidFunc = () => void;
+
+const f1: voidFunc = () => {
+    return true;
+};
+
+const f2: voidFunc = () => true;
+
+const f3: voidFunc = function () {
+    return true;
+}
+```
+When the return values of these functions are assigned to another variable,  
+it will retain the type of `void`:  
+```JS
+// const v1: void
+const v1 = f1();    
+const v2 = f2();
+const v3 = f3();
+
+console.log(v1, v2, v3);
+// true, true, true
+```
+This behavior exists so that the following code is valid even thought  
+`Array.prototype.push` returns a number and the `Array.prototype.forEach` method  
+expects a function with a return type of `void`.  
+```JS
+const src = [1, 2, 3];
+const dst = [0];
+
+src.forEach((el) => dst.push(el));
+console.log(dst) // [0, 1, 2, 3]
+```
+Another special case to be aware of:  
+When a literal function definition has a `void` return type, that function must **not** return anything.  
+```JS
+// Type 'boolean' is not assignable to type 'void'
+function f2(): void {
+    return true;
+}
+
+const f3 = function(): void {
+    return true;
+}
+```.
