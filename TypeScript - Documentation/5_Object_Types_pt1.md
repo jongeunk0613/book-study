@@ -246,6 +246,110 @@ myArray[2] = "Mallory"
 ```
 
 You can't set myArray[2] because the index signature is `readonly`.  
+<br/>
 
 ### Extending Types
+
+By using the `extends` keyword, we can avoid writting the same properties over again.  
+It copies members from other named types, and add the declared new members to the new type.  
+It is useful for not repeating the similar types and for signaling intent that several different declarations of the same property might be related.  
+
+```JS
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
+interface AddressWithUnit extends BasicAddress {
+  unit: string;
+}
+```
+
+<br/>
+`interface`s can also extend from multiple types.  
+
+```JS
+interface Colorful {
+  color: string;
+}
+
+interface Circle {
+  radius: number;
+}
+
+interface ColorfulCircle extends Colorful, Circle {}
+
+const cc: ColorfulCircle = {
+  color: "red",
+  radius: 42,
+}
+```
+<br/>
+
+### Intersection Types
+
+**Intersection Types** is used to combine existing object types by using the `&` operator.  
+```JS
+interface Colorful {
+  color: string;
+}
+
+interface Circle {
+  radius: number;
+}
+
+type ColorfulCircle = Colorful & Circle;
+// Has all members of Colorful and Circle
+
+interface Colorful {
+  color: string;
+}
+
+interface Circle {
+  radius: number;
+}
+
+type ColorfulCircle = Colorful & Circle;
+
+function draw(circle: Colorful & Circle) {
+  console.log(`Color was ${circle.color}`);
+  console.log(`Radius was ${circle.radius}`)
+}
+
+// okay
+draw({color: "blue", radius: 42});
+
+// oops
+draw({color: "red", raidus: 42});
+
+// Argument of type '{ color: string; raidus: number; }' is not
+// assignable to parameter of type 'Colorful & Circle'.
+// Object literal may only specify known properties, but 'raidus'
+// does not exist in type 'Colorful & Cirlce'. Did you mean to write 'radius'?
+```
+<br/>
+
+### Interfaces vs. Intersections
+
+They are similar but different.  
+Similarity  
+- `interfaces` &rarr; uses `extends` to extend from other types  
+- `intersection` &rarr; can do something similar with `&` and name the result with a type alias  
+
+Difference  
+- Difference in how conflicts are handled
+
+<br/>
+<hr/>
+
+### Intersections vs Extends
+
+<hr/>
+<br/>
+
+
+
 
