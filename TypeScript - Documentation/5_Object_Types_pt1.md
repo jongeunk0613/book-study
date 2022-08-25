@@ -304,16 +304,6 @@ interface Circle {
 type ColorfulCircle = Colorful & Circle;
 // Has all members of Colorful and Circle
 
-interface Colorful {
-  color: string;
-}
-
-interface Circle {
-  radius: number;
-}
-
-type ColorfulCircle = Colorful & Circle;
-
 function draw(circle: Colorful & Circle) {
   console.log(`Color was ${circle.color}`);
   console.log(`Radius was ${circle.radius}`)
@@ -346,6 +336,98 @@ Difference
 <hr/>
 
 ### Intersections vs Extends
+
+#### `Extends` can be used only with types with statically known members
+
+```JS
+type SimpleType = {x: string};
+interface SimpleInterface extends SimpleType {};    // ok
+
+type ComplexType = {x: string} | {x: number};
+interface ComplexInterface extends ComplexType {};
+// An interface can only extend an object type or intersection of object types with statically known members.
+```
+
+`Intersection` is a general type operation that can be performed on any two types and will give a result.  
+`Extend` is limited to interfaces and interface-like types (and classes).  
+
+<br/>
+
+#### `Extends` can't create fields with the same name as in the parent with wider type
+
+```JS
+interface Parent {
+    x: string | number;
+}
+
+interface Child1 extends Parent {
+    x: string;  // ok
+}
+
+interface Child2 extends Parent {
+    x: string | number | boolean;   // error
+}
+// Interface 'Child2' incorrectly extends interface 'Parent'.
+//   Types of property 'x' are incompatible.
+    // Type 'string | number | boolean' is not assignable to type 'string | number'.
+    //   Type 'boolean' is not assignable to type 'string | number'.
+```
+
+On the other hand, type `intersection` does not complain.  
+
+```JS
+interface Parent {
+    x: string | number;
+}
+
+type IntersectedChild = Parent & {x: string | boolean };    // ok
+// IntersectedChild will have property 'x' that is an intersection 
+// of 'string | number' and 'string | boolean', that is a 'string'.
+type IntersectedChildX = IntersectedChild['x']; // string
+```
+<br/>
+
+#### Members with same property key
+
+`extend` throws an error when the derriving interface declares a property  
+with the same key as the one in the derived interface.  
+
+```JS
+interface NumberToStringConverter {
+    convert: (value: number) => string;
+}
+
+interface BidirectionalStringNumberConverter extends NumberToStringConverter {
+    convert: (value: string) => number;
+}
+
+// Interface 'BidirectionalStringNumberConverter' incorrectly extends interface 'NumberToStringConverter'.
+//   Types of property 'convert' are incompatible.
+//     Type '(value: string) => number' is not assignable to type '(value: number) => string'.
+//       Types of parameters 'value' and 'value' are incompatible.
+//         Type 'number' is not assignable to type 'string'.
+```
+
+With `intersection`, no error is given and both properties can be used.  
+```JS
+interface NumberToStringConverter {
+    convert: (value: number) => string;
+}
+
+type BidirectionalStringNumberConverter = NumberToStringConverter & {
+    convert: (value: string) => number;
+}
+
+const converter: BidirectionalStringNumberConverter = {
+    convert: (value: string | number) => {
+        return (typeof value === 'string' ? Number(value) : String(value)) as string & number;  // type assertion needed
+    }
+}
+
+const s: string = converter.convert(0);
+const n: number = converter.convert('a');
+
+```
 
 <hr/>
 <br/>
