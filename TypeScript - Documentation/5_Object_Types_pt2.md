@@ -91,6 +91,177 @@ type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
 
 # The `Array` Type
 
+`Array` is a common generic type we use : `number[]` or `string[]` is a shorthand for `Array<number>` and `Array<string>`.  
+
+```JS
+function doSomething(value: Array<string>) {
+    console.log(value);
+}
+
+let myArray: string[] = ["hello", "world"];
+
+doSomething(myArray);
+doSomething(new Array("hello", "world"));
+```
+
+```JS
+interface Array<Type> {
+  /**
+   * Gets or sets the length of the array.
+   */
+  length: number;
+ 
+  /**
+   * Removes the last element from an array and returns it.
+   */
+  pop(): Type | undefined;
+ 
+  /**
+   * Appends new elements to an array, and returns the new length of the array.
+   */
+  push(...items: Type[]): number;
+ 
+  // ...
+}
+```
+
+<br/>
+
+# The `ReadonlyArray` Type
+
+The `ReadonlyArray` is a special type that describes arrays that **shouldn't be changed**.  
+
+```JS
+function doStuff(values: ReadonlyArray<string>) {
+    const copy = values.slice();
+    console.log(`The first value is ${values[0]}`);
+
+    values.push("hello");
+    // Property 'push' does ot exist on type 'readonly string[]'
+}
+```
+
+It's like the `readonly` modifier for properties &rarr; a tool used for intent.  
+Function returns `ReadonlyArray` &rarr; not meant to change the contents at all  
+Function consumes `ReadonlyArray` &rarr; any array passed into the function will not be changed  
+
+Unlike `Array`, there isn't a `ReadonlyArray` constructor.  
+
+```JS
+new ReadonlyArray("red", "green", "blue");
+// 'ReadonlyArray' only refers to a type, but is being used as a value here
+```
+
+Instead, assign a regular `Array` to a `ReadonlyArray`.  
+```JS
+const roArray: ReadonlyArray<string> = ["red", "green", "blue"]
+```
+
+TypeScript also provides a shorthand syntax for `ReadonlyArray<Type` &rarr; `readonly Type[]`.  
+```JS
+function doStuff(values: readonly string[]) {
+    const copy = values.slice();
+    console.log(`The first value is ${values[0]}`);
+
+    values.push("hello!");
+    // Property 'push' does not exist on type 'readonly string[]`
+}
+```
+
+Unlike `readonly` property modifier, assignability isn't bidirectional between regular `Array`s and `ReadonlyArray`s.  
+```JS
+let x: readonly string[] = [];
+let y: string[] = [];
+
+x = y;
+y = x;
+// The type 'readonly string[]' is 'readonly' and cannot be assigned to the mutable type 'string[]'
+```
+
+<br/>
+
+# Tuple Types
+
+Another sort of `Array` type that know exactly **how many elements** it contains,  
+and exactly **which types** it contains **at specific positions**.  
+
+```JS
+type StringNumberPair = [string, number];
+```
+
+Like `ReadonlyArray`, it has no representation at runtime,  but is significant to TypeScript.  
+To TypeScript, `StringNumberPair` describes array whose `0` index contains a `string` and whose `1` index contains a `number`.  
+
+```JS
+function doSometing(pair: [string, number]){
+    const a = pair[0];
+    // const a: string
+    const b = pair[1];
+    // const b: number
+}
+
+doSometing(["hello", 42]);
+```
+
+If we try to index past the number of elements, we'll get an error.  
+```JS
+function doSometing(pair: [string, number]){
+    const a = pair[0];
+    // const a: string
+    const b = pair[1];
+    // const b: number
+
+    const c = pair[2];
+    // Tuple type '[string, number'] of length '2' has no element at index '2'.
+}
+
+doSometing(["hello", 42]);
+```
+
+Destructuring tuples is also possible using JavaScript's array destructuring.  
+```JS
+function doSometing(stringHash: [string, number]){
+    const [inputString, hash] = stringHash;
+    console.log(inputString);
+    // const inputString: string
+    console.log(hash);
+    // const hash: number
+}
+```
+
+Simple tuple types are equivalent to types which are versions of `Array`s that  
+**declare properties for specific indexes**, and that **declare `length` with a numeric literal type**.  
+
+```JS
+interface StringNumberPair {
+    length: 2;
+    0: string;
+    1: number;
+
+    // Other 'Array<string | number'> members...
+    slice(start?: number, end?: number): Array<string | number>;
+}
+```
+
+Tuples can have optional properties by writing out a question mark.  
+Optional tuple elements can only come at the end, and also affect the type of `length`.  
+
+```JS
+type Either2dOr3d = [number, number, number?];
+
+function setCoordinate(coord: Either2dOr3d) {
+    const [x, y, z] = coord;
+    // const z: number | undefined
+    console.log(`Provided coordinates had ${coord.length} dimensions`);
+    // (property) length: 2 | 3
+}
+```
+
+Tuples can also have rest elements, which have to be an array/tuple type.  
+A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.  
+
+
+
 
 
 
