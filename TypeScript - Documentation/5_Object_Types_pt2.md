@@ -260,6 +260,43 @@ function setCoordinate(coord: Either2dOr3d) {
 Tuples can also have rest elements, which have to be an array/tuple type.  
 A tuple with a rest element has no set "length" - it only has a set of well-known elements in different positions.  
 
+```JS
+type StringNumberBooleans = [string, number, ...boolean[]];
+type StringBooleansNumber = [string, ...boolean[], number];
+type BooleansStringNumber = [...boolean[], string, number];
+
+function getLength(snbs: StringBooleansNumber) {
+    console.log(snbs.length);
+    // (property) length: number
+}
+
+const a: StringNumberBooleans = ["hello", 1];
+const b: StringNumberBooleans = ["beautiful", 2, true];
+const c: StringNumberBooleans = ["world", 3, true, false, true, false, true];
+```
+
+It is useful when using with parameter lists, like rest parameters and arguments.  
+
+```JS
+function readButtonInput(...args: [string, number, ...boolean[]]) {
+    const [name, version, ...input] = args;
+    // ...
+}
+
+// The top is basically equivalent to :
+function readButtonInput(name: string, version: number, ...input: boolean[]) {
+    // ...
+}
+```
+
+<br/>
+
+# `readonly` Tuple Types
+
+
+
+
+
 
 
 
