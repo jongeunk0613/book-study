@@ -293,7 +293,34 @@ function readButtonInput(name: string, version: number, ...input: boolean[]) {
 
 # `readonly` Tuple Types
 
+Just like with array shorthand syntax, declare a `readonly` tuple by writing the `readonly` modifier in front.  
 
+```JS
+function doSomething(pair: readonly [string, number]) {
+    pair[0] = "hello!";
+    // Cannot assign to '0' because it is a read-only property
+}
+```
+
+Tuples tend to be created and left un-modified in most codes, so annotating types as `readonly` tuple when possible is a good default.  
+&rarr; array literals with `const` assertions are inferred as `readonly` tuple types.  
+
+```JS
+let point = [3, 4] as const;
+// let point: readonly [3, 4]
+
+function distanceFromOrigin([x, y]: [number, number]) {
+    return Math.sqrt(x ** 2 + y ** 2);
+}
+
+distanceFromOrigin(point);
+// Argument of type 'readonly [3, 4]' is not assignable to parameter of type '[number, number]'.
+//   The type 'readonly [3, 4]' is 'readonly' and cannot be assigned to the mutable type '[number, number]'.
+```
+
+Even though `distanceFromOrigin` never modifies its elements, expects a mutable tuple.  
+`point`'s type (`readonly [3,4]`) is not compatible with `[number, number]`,  
+since that type can't guarantee `point`'s elements won't be mutated. 
 
 
 
