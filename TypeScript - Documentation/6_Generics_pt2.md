@@ -67,22 +67,22 @@ First, create an interface that describes the constraint.
 Then, Use this interface and the `extends` keyword to denote our constraint.  
 
 ```JS
-  interface Lengthwise {
-    length: number
-  }
+interface Lengthwise {
+  length: number
+}
   
-  function logginIdentity<Type extends Lengthwise>(arg: Type): Type {
-    console.log(arg.length); // Now we know it has a .length property. No more error is throwed
-    return arg;
-  }
+function logginIdentity<Type extends Lengthwise>(arg: Type): Type {
+  console.log(arg.length); // Now we know it has a .length property. No more error is throwed
+  return arg;
+}
 ```
   
 Because the generic function is now constrained, it will no longer work over any and all types.  
 ```JS
-  logginIdentity(3);
-  // Argument of type 'number' is not assignable to parameter of type 'Lengthwise'.
+logginIdentity(3);
+// Argument of type 'number' is not assignable to parameter of type 'Lengthwise'.
   
-  logginIdentity({ length: 10, value: 3});
+logginIdentity({ length: 10, value: 3});
 ```
 <br/>
   
