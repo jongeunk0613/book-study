@@ -22,5 +22,5 @@ type M = keyof Mapish;
 ```
 
 In this example, `M` is `string | number` because JavaScript object keys are always  
-coerced to a string, so `obj[0]` is always the same as obj["0"].  
+coerced to a string, so `obj[0]` is always the same as `obj["0"]`.  
 
