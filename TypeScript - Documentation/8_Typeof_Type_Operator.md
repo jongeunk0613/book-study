@@ -47,9 +47,23 @@ type P = ReturnType<typeof f>;
 //     x: number;
 //     y: number;
 // }
-``
+```
   
 <br/>
   
 ## Limitations
+  
+TypeScript limits the kinds of expressions were `typeof` can be used on.  
+It's only legal to use `typeof` on identifiers (i.e. variable names) or their properties.  
+This helps avoid writing code that you think is executing, but it isn't.  
 
+```js
+function msgbox(s: string) {
+    console.log(s);
+}
+
+// Meant to use = ReturnType<typeof msgbox>
+let shouldContinue: typeof msgbox("Are you sure you want to continue?");
+// ',' expected.
+```
+  
