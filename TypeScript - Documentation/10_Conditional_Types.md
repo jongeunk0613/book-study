@@ -150,4 +150,58 @@ Otherwise, it just returns the type it was given.
 
 ## Inferring Within Conditional Types
 
+Conditional types provide us with a way to infer from types we compare against in the true branch using the `infer` keyword.  
+
+ex: use `infer` instead of manually fetching out the element type in `Flatten`.  
+
+```javascript
+type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
+```
+
+By using the `infer` keyword, a new generic type (`Item`) is declaratively introduced  
+instead of specifying how to retrieve the element type of `T` within the true branch.  
+
+`!` `infer` works only on the true branch.  
+```javascript
+type Flatten<Type> = Type extends Array<infer Item> ? Type : Item;
+// Cannot find name 'Item'.
+// Exported type alias 'Flatten' has or is using private name 'Item'.
+```
+
+<br/>
+
+We can write some useful helper type aliases using the `infer` keyword.  
+ex: extract the return type out from function types.  
+
+```javascript
+type GetReturnType<Type> = Type extends (...args: never[]) => infer Return
+  ? Return
+  : never;
+ 
+type Num = GetReturnType<() => number>;
+// type Num = number
+ 
+type Str = GetReturnType<(x: string) => string>;
+// type Str = string
+ 
+type Bools = GetReturnType<(a: boolean, b: boolean) => boolean[]>;
+// type Bools = boolean[]
+```
+
+When inferring from a type with multiple call signatures (ex: overloaded function),  
+inferences are made from the last signature (which, presumably, is the most permissive catch-all case).  
+
+```javascript
+declare function stringOrNum(x: string): number;
+declare function stringOrNum(x: number): string;
+declare function stringOrNum(x: string | number): string | number;
+ 
+type T1 = ReturnType<typeof stringOrNum>;
+// type T1 = string | number
+```
+
+<br/>
+
+## Distributive Conditional Types
+
 
