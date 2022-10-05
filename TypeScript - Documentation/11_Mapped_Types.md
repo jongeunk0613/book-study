@@ -91,6 +91,77 @@ type User = Concrete<MaybeUser>;
 
 ## Key Remapping via `as`
 
+In TypeScript 4.1 and onwards, you can re-map keys in mapped types with an `as` clause in a mapped type.  
+
+```javascript
+type MappedTypeWithNewProperties<Type> = {
+    [Properties in keyof Type as NewKeyType]: Type[Properties]
+}
+```
+
+With template literal types, new property names from prior ones can be created.  
+
+```javascript
+type Getters<Type> = {
+    [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
+};
+ 
+interface Person {
+    name: string;
+    age: number;
+    location: string;
+}
+ 
+type LazyPerson = Getters<Person>;
+// type LazyPerson = {
+//     getName: () => string;
+//     getAge: () => number;
+//     getLocation: () => string;
+// }
+```
+
+Also, keys can be filtered out by producing `never` via a conditional type.  
+
+```javascript
+// Remove the 'kind' property
+type RemoveKindField<Type> = {
+    [Property in keyof Type as Exclude<Property, "kind">]: Type[Property]
+};
+ 
+interface Circle {
+    kind: "circle";
+    radius: number;
+}
+ 
+type KindlessCircle = RemoveKindField<Circle>;        
+// type KindlessCircle = {
+//     radius: number;
+// }
+```
+
+Arbitrary unions can also be mapped; not just unions of `string | number | symbol`, but unions of any type.  
+
+```javascript
+type EventConfig<Events extends { kind: string }> = {
+    [E in Events as E["kind"]]: (event: E) => void;
+}
+ 
+type SquareEvent = { kind: "square", x: number, y: number };
+type CircleEvent = { kind: "circle", radius: number };
+ 
+type Config = EventConfig<SquareEvent | CircleEvent>    
+// type Config = {
+//     square: (event: SquareEvent) => void;
+//     circle: (event: CircleEvent) => void;
+// }
+```
+
+<br/>
+
+## Further Exploration
+
+
+
 
 
 
