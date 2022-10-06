@@ -160,8 +160,27 @@ type Config = EventConfig<SquareEvent | CircleEvent>
 
 ## Further Exploration
 
+Mapped types work well with type manipulation sections.  
 
+ex: A mapped type using a conditional type which returns either a `true` or `false` depending on  
+whether an object has the property pii set to the literal true.  
 
+```javascript
+type ExtractPII<Type> = {
+  [Property in keyof Type]: Type[Property] extends { pii: true } ? true : false;
+};
+ 
+type DBFields = {
+  id: { format: "incrementing" };
+  name: { type: string; pii: true };
+};
+ 
+type ObjectsNeedingGDPRDeletion = ExtractPII<DBFields>;              
+// type ObjectsNeedingGDPRDeletion = {
+//     id: false;
+//     name: true;
+// }
+```
 
 
 
