@@ -1,4 +1,50 @@
-# 
+# Template Literal Types
+
+Template literal types build on string literal types.  
+They have the ability to expand into many strings via unions.  
+
+They have the same syntax as template literal strings in JavaScript,  
+but are used in type positions.  
+<br/>
+
+When used with concrete literal types, a template literal produces a new string literal type by concatenating the contents.  
+
+```ts
+type World = "world";
+ 
+type Greeting = `hello ${World}`;
+// type Greeting = "hello world"
+```
+
+When a union is used in the interpolated position,  
+the type is the set of every possible string literal that could be represented by each union member.  
+
+```ts
+type EmailLocaleIDs = "welcome_email" | "email_heading";
+type FooterLocaleIDs = "footer_title" | "footer_sendoff";
+ 
+type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
+// type AllLocaleIDs = "welcome_email_id" | "email_heading_id" | "footer_title_id" | "footer_sendoff_id"
+```
+
+For each interpolated position in the template literal, the unions are cross multiplied.  
+
+```ts
+type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
+type Lang = "en" | "ja" | "pt";
+ 
+type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
+// type LocaleMessageIDs = "en_welcome_email_id" | "en_email_heading_id" | "en_footer_title_id" | 
+//                         "en_footer_sendoff_id" | "ja_welcome_email_id" | "ja_email_heading_id" | 
+//                         "ja_footer_title_id" | "ja_footer_sendoff_id" | "pt_welcome_email_id" | 
+//                         "pt_email_heading_id" | "pt_footer_title_id" | "pt_footer_sendoff_id"
+```
+<br/>
+
+## String Unions in Types
+
+
+## Inference with Template Literals
 
 
 
