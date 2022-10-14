@@ -43,8 +43,76 @@ type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
 
 ## String Unions in Types
 
+The power in template literals comes when defining a new string based on information inside a type.
+
+ex: 
+- function `makeWatchedObject` adds a new function called `on()` to the passed object.  
+- function `on` expects two arguments: an `eventName` (string) and a `callBack` (function).  
+- `eventName` should be of the form `attributeInThePassedObject` + `"Changed"`.  
+- function `callback`, when called should be passed a value of the type associated with the name `attributeInThePassedObject`.  
+
+<br/>
+
+```ts
+const passedObject = {
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26,
+};
+```
+
+- `eventName` for the property `firstName` will be `firstNameChanged`.  
+- when calling the callback for `firstNameChanged`, a `string` will be passed.  
+- when calling the callback for `ageChanged`, a `number` will be passed.  
+
+The naive function signature of `on()` might be: `on(eventName: string, callBack: (newValue: any) => void)`.  
+
+However some type constraints is missing and this can be solved with template literal types.  
+
+<br/>
+For example, it would be better to ensure that the set of eligible event names was constrained  <br/>
+by the union of attribute names in the watched object with "Changed" added at the end.  
+
+```ts
+type PropEventSource<Type> = {
+    on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
+};
+ 
+/// Create a "watched object" with an 'on' method
+/// so that you can watch for changes to properties.
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+```
+
+With this, we can build something that errors when given the wrong property:
+
+```ts
+const person = makeWatchedObject({
+  firstName: "Saoirse",
+  lastName: "Ronan",
+  age: 26
+});
+ 
+person.on("firstNameChanged", () => {});
+ 
+// Prevent easy human error (using the key instead of the event name)
+person.on("firstName", () => {});
+// Argument of type '"firstName"' is not assignable to parameter of type '"firstNameChanged" | "lastNameChanged" | "ageChanged"'.
+ 
+// It's typo-resistant
+person.on("frstNameChanged", () => {});
+// Argument of type '"frstNameChanged"' is not assignable to parameter of type '"firstNameChanged" | "lastNameChanged" | "ageChanged"'.
+```
+
+<br/>
 
 ## Inference with Template Literals
+
+
+
+
+
+
+
 
 
 
