@@ -220,5 +220,109 @@ but TypeScript will tell you when it's necessary.
 
 # Methods
 
+A function property on a class is called **method**.  
+Methods can use all the same type annotations as functions and constructors.  
+
+```ts
+class Point {
+  x = 10;
+  y = 10;
+ 
+  scale(n: number): void {
+    this.x *= n;
+    this.y *= n;
+  }
+}
+```
+
+<br/>
+
+Inside a method body, it is mandatory to access fields and other methods via `this.`.  
+
+```ts
+let x: number = 0;
+ 
+class C {
+  x: string = "hello";
+ 
+  m() {
+    // This is trying to modify 'x' from line 1, not the class property
+    x = "world";
+    // Type 'string' is not assignable to type 'number'.
+  }
+}
+```
+
+<br/>
+
+# Getters / Setters
+
+Classes can also have **accessors**.  
+
+```ts
+class C {
+  _length = 0;
+  get length() {
+    return this._length;
+  }
+  set length(value) {
+    this._length = value;
+  }
+}
+```
+
+TypeScript has some special inference rules for accessors:  
+1. If `get` exists but no `set`, the property is automatically `readonly`  
+2. If the type of the setter parameter is not specified, it is inferred from the return type of the getter
+3. Getters and setters must have the same **Member Visibility**  
+  - `public`, `private`, `protected`  
+
+
+Since TypeScript 4.3, it is possible to have accessors with different types for getting and setting.  
+
+```ts
+class Thing {
+  _size = 0;
+ 
+  get size(): number {
+    return this._size;
+  }
+ 
+  set size(value: string | number | boolean) {
+    let num = Number(value);
+ 
+    // Don't allow NaN, Infinity, etc
+ 
+    if (!Number.isFinite(num)) {
+      this._size = 0;
+      return;
+    }
+ 
+    this._size = num;
+  }
+}
+```
+
+<br/>
+
+# Index Signatures
+
+Classes can declare index signatures.  
+They work the same way as index signatures for other object types.  
+
+```ts
+class MyClass {
+  [s: string]: boolean | ((s: string) => boolean);
+ 
+  check(s: string) {
+    return this[s] as boolean;
+  }
+}
+```
+
+It's not easy to usefully use index signature types because they have to capture the types of methods too.  
+Generally, it's better to store indexed data in another place instead of on the class instance itself.  
+
+
 
 
