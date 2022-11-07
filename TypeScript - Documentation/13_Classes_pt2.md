@@ -313,6 +313,240 @@ For runtimes that don't support `Object.setPrototypeOf`, you may instead be able
 
 # Member Visibility
 
+With TypeScript, you can control whether certain methods or properties are visible to code outside the class.  
+
+### `public`
+
+It's the default visibility of class members.  
+A `public` member can be accessed anywhere.  
+
+```ts
+class Greeter {
+  public greet() {
+    console.log("hi!");
+  }
+}
+
+const g = new Greeter();
+g.greet();
+```
+
+Because `public` is the default visibility modifier, you don't need to write it on a class member.  
+But might choose to do so for style/readability reasons.  
+
+<br/>
+
+### `protected`
+
+`protected` members are only visible to subclasses of the class they're declared in.  
+
+```ts
+class Greeter {
+  public greet() {
+    console.log("hi!");
+  }
+  protected getName() {
+    return "hi";
+  }
+}
+
+class SpecialGreeter extends Greeter {
+  public howdy() {
+    // OK to access protected member here
+    console.log("Howdy, " + this.getName());
+  }
+}
+
+const g = new SpecialGreeter();
+g.greet();    // OK
+g.getName();
+// Proterty 'getName' is protected and only accessible within class 'Greeter' and its subclasses
+```
+
+<br/>
+
+### Exposure of protected members
+
+Derived classes need to follow their base class contracts,  
+but may choose to expose a subtype of base class with more capabilities.  
+ex: making `protected` members `public`  
+
+```ts
+class Base {
+  protected m = 10;
+}
+
+class Derived extends Base {
+  // No modifier, so default is 'public'
+  m = 15;
+}
+
+const d = new Derived();
+console.log(d.m);   // OK
+```
+
+Note that `Derived` was already able to freely read and write `m`,  
+so this doesn't meaningfully alter the "security" of this situation.  
+
+The main thing to note here is that in the derived class,  
+wee need to be careful to repeat the `protected` modifier if this exposure isn't intentional.  
+
+<br/>
+
+### Cross-hierarchy protected access
+
+Different OOP languages disagree about whether it's legal to access a `protected` member through a base class reference.  
+
+```ts
+class Base {
+  protected x: number = 1;
+}
+
+class Derived1 extends Base {
+  protected x: number = 5;
+}
+
+class Derived2 extends Base {
+  f1(other: Derived2) {
+    other.x = 10;
+  }
+
+  f2(other: Base) {
+    other.x = 10;
+    // Property 'x' is protected and only accessible through an instance of class 'Derived2'. 
+    // This is an instance of class 'Base'.
+  }
+}
+```
+
+TypeScript treats this as illegal,  
+because accessing `x` in `Derived2` should only be legal from `Derived2`'s subclasses,  
+and `Derived1` isn't one of them.  
+Likely, accessing it through a base class reference should be illegal too.  
+
+<br/>
+
+### `private`
+
+`private` is like `protected`, but doesn't allow access to the member even from subclasses.  
+
+```ts
+class Base {
+  private x = 0;
+}
+
+const b = new Base();
+// Can't access from outside the class
+console.log(b.x);
+// Property 'x' is private and only accessible within Class 'Base'
+
+class Derived extends Base {
+  showX() {
+    // Can't access in subclasses
+    console.log(this.x);
+    // Property 'x' is private and only accessible within Class 'Base'
+  }
+}
+```
+
+Because `private` members aren't visible to derived classes, a derived class can't increase its visibility.  
+
+```ts
+class Base {
+  private x = 0;
+}
+
+class Derived extends Base {
+  // Class 'Derived' incorrectly extends base class 'Base'.
+  //  Property 'x' is private in type 'Base' but not in type 'Derived'
+  x = 1;
+}
+```
+
+<br/>
+
+### Cross-instance private access
+
+Different OOP languages disagree about whether different instances of the same class may access each other's `private` members.  
+TypeScript allows cross-instance `private` access.  
+
+```ts
+class A {
+  private x = 10;
+
+  public sameAs(other: A) {
+    // No error
+    return other.x === this.x;
+  }
+}
+```
+
+<br/>
+
+### Caveats
+
+Like other aspects of TypeScript's type system,  
+`private` and `protected` are only enforced during type checking.  
+Meaning, javaScript runtime constructs like `in` or simple property lookup  
+can still access a `private` or `protected` member.  
+
+```ts
+class MySafe {
+  private secretKey = 12345;
+}
+
+
+// In a JavaScript file...
+const s = new MySafe();
+console.log(s.secretKey);
+```
+
+`private` also allows access using bracket notion during type checking.  
+This makes `private` declared fields potentially easier to access for things like unit tests,  
+with the drawback that these fields are **soft private** and don't strictly enforce privacy.  
+
+```ts
+class MySafe {
+  private secretKey = 12345;
+}
+
+const s = new MySafe();
+
+// Not allowed during type checking
+console.log(s.secretKey);
+// Property 'secretKey' is private and only accessible within class 'MySafe'.
+
+// ok
+console.log(s["secretKey"]);
+```
+
+<br/>
+
+Unlike TypeScript's `private`, JavaScript's private fields `#` remain private after compilation  
+and do not provide the previously mentioned escape hatches like bracket notation access, making them **hard private**  
+
+```ts
+class Dog {
+  #barkAmount = 0;
+  personality = "happy";
+
+  constructor() {}
+}
+```
+
+When compiling to ES2021 or less, TypeScript will use WeakMaps in place of `#`  
+
+```ts
+"use strict";
+var _Dog_barkAmount;
+class Dog {
+    constructor() {
+        _Dog_barkAmount.set(this, 0);
+        this.personality = "happy";
+    }
+}
+_Dog_barkAmount = new WeakMap();
+```
 
 
 
